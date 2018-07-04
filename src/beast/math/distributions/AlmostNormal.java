@@ -140,7 +140,7 @@ public class AlmostNormal extends ParametricDistribution {
     }
 
     @Override
-    public double getMean() {
+    public double getMeanWithoutOffset() {
         if (meanInput.get() == null) {
         	return offsetInput.get();
         } else {

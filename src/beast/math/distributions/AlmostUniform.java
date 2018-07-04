@@ -124,7 +124,7 @@ public class AlmostUniform extends Uniform {
     }
     
     @Override
-    public double getMean() {
+    public double getMeanWithoutOffset() {
     	if (Double.isInfinite(_lower) || Double.isInfinite(_upper)) {
     		return Double.NaN;
     	}
