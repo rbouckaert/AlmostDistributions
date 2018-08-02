@@ -8,7 +8,7 @@ import beast.core.Description;
 import beast.core.Input;
 
 @Description("Uniform distribution with very small support outside range (to prevent infinities)")
-public class AlmostUniform extends Uniform {
+public class AlmostUniform extends Uniform implements AlmostDistribution {
 	public Input<Double> penaltyInput = new Input<Double>("penalty", "penalty for being outside range", 10000.0);
 
     double centre;
@@ -131,4 +131,13 @@ public class AlmostUniform extends Uniform {
     	return offsetInput.get() + (_upper + _lower)/2;
     }
 
+    @Override
+    public double getLowerTarget() throws MathException {
+    	return _lower;
+    }
+    
+    @Override
+    public double getUpperTarget() throws MathException {
+    	return _upper;
+    }
 }

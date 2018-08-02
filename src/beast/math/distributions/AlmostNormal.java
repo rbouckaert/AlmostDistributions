@@ -11,7 +11,7 @@ import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 
 @Description("Normal distribution with very small support outside range of 2 sigma")
-public class AlmostNormal extends ParametricDistribution {
+public class AlmostNormal extends ParametricDistribution implements AlmostDistribution {
     final public Input<RealParameter> meanInput = new Input<>("mean", "mean of the normal distribution, defaults to 0");
     final public Input<RealParameter> sigmaInput = new Input<>("sigma", "variance of the normal distribution, defaults to 1");
     final public Input<RealParameter> tauInput = new Input<>("tau", "precission of the normal distribution, defaults to 1", Validate.XOR, sigmaInput);
@@ -146,5 +146,15 @@ public class AlmostNormal extends ParametricDistribution {
         } else {
         	return offsetInput.get() + meanInput.get().getValue();
         }
+    }
+    
+    @Override
+    public double getLowerTarget() throws MathException {
+    	return dist.lower;
+    }
+    
+    @Override
+    public double getUpperTarget() throws MathException {
+    	return dist.upper;
     }
 }
