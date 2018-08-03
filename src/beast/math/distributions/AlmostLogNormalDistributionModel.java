@@ -4,7 +4,7 @@ import org.apache.commons.math.MathException;
 
 import beast.core.Input;
 
-public class AlmostLogNormal extends LogNormalDistributionModel implements AlmostDistribution {
+public class AlmostLogNormalDistributionModel extends LogNormalDistributionModel implements AlmostDistribution {
 	public Input<Double> penaltyInput = new Input<Double>("penalty", "penalty for being outside range", 10000.0);
 
 	double _lower, _upper, penalty;
@@ -54,4 +54,9 @@ public class AlmostLogNormal extends LogNormalDistributionModel implements Almos
 		return _upper;
 	}
 
+	
+	@Override
+	public double getMeanWithoutOffset() {
+		return dist.m_fMean;
+	}
 }

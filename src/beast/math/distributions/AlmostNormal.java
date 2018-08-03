@@ -28,10 +28,10 @@ public class AlmostNormal extends ParametricDistribution implements AlmostDistri
 
     @Override
     public void initAndValidate() {
-    	refresh();
     	penalty = penaltyInput.get();
     	customUpper = upperInput.get();
     	trueBounds = trueBoundsInput.get();
+    	refresh();
    }
     
 	void refresh() {
