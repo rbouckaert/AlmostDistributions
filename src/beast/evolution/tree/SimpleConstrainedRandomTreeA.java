@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.math.MathException;
 
 import beast.core.BEASTInterface;
+import beast.core.Description;
 import beast.core.util.Log;
 import beast.evolution.alignment.TaxonSet;
 import beast.math.distributions.AlmostDistribution;
@@ -19,6 +20,7 @@ import beast.math.distributions.MRCAPrior;
 import beast.math.distributions.ParametricDistribution;
 import beast.util.Randomizer;
 
+@Description("Like SimpleConstrainedRandomTree, but attempting to take Almost distributions in account")
 public class SimpleConstrainedRandomTreeA extends SimpleConstrainedRandomTree {
 	
 	
@@ -89,13 +91,8 @@ public class SimpleConstrainedRandomTreeA extends SimpleConstrainedRandomTree {
 	                        bounds.lower = ((AlmostDistribution)distr).getLowerTarget();
 			                bounds.upper = ((AlmostDistribution)distr).getUpperTarget();
 	                	} else {
-	                        final double offset = distr.offsetInput.get();
-	                        bounds.lower = Math.max(distr.inverseCumulativeProbability(0.0) + offset, 0.0);
-			                bounds.upper = distr.inverseCumulativeProbability(1.0) + offset;
-	                	}
-	                	if (bounds.lower > bounds.upper) {
-	                		int h = 3;
-	                		h++;
+	                        bounds.lower = Math.max(distr.inverseCumulativeProbability(0.0), 0.0);
+			                bounds.upper = distr.inverseCumulativeProbability(1.0);
 	                	}
                         assert bounds.lower <= bounds.upper;
 					} catch (MathException e) {
@@ -117,6 +114,8 @@ public class SimpleConstrainedRandomTreeA extends SimpleConstrainedRandomTree {
                                     taxonSetIDs.set(k, prior.getID());
                                     System.out.println(prior.getID() + " " + bounds);
                                 }
+                            } else {
+                                System.out.println("Duplicate " + prior.getID() + " (" + Arrays.toString(bTaxa.toArray()) + ") originate=" + prior.useOriginateInput.get());                            	
                             }
                             isDuplicate = true;
                         }
@@ -488,4 +487,143 @@ public class SimpleConstrainedRandomTreeA extends SimpleConstrainedRandomTree {
         initArrays();
     }
 
+
+	protected boolean setHeights(final double rate, final boolean safe, final double epsi,
+			final double clampBoundsLevel) throws ConstraintViolatedException {
+		// node low >= all child nodes low. node high < parent high
+		assert rate > 0;
+		assert 0 <= clampBoundsLevel && clampBoundsLevel < 1;
+
+		Node[] post = listNodesPostOrder(null, null);
+		postCache = null; // can't figure out the javanese to call
+							// TreeInterface.listNodesPostOrder
+
+		Bound[] bounds = new Bound[boundPerNode.length];
+
+		for (int i = post.length - 1; i >= 0; --i) {
+			final Node node = post[i];
+			final int nr = node.getNr();
+			bounds[nr] = boundPerNode[nr];
+
+			Bound b = bounds[nr];
+			if (b == null) {
+				bounds[nr] = b = new Bound();
+			}
+			if (b.lower < 0) {
+				b.lower = 0.0;
+			}
+			if (clampBoundsLevel > 0) {
+				final ParametricDistribution distr = distPerNode[nr];
+				if (distr != null) {
+					try {
+						final double low = distr.inverseCumulativeProbability(clampBoundsLevel / 2);
+						final double high = distr.inverseCumulativeProbability(1 - clampBoundsLevel / 2);
+						if (distr.density(low) != distr.density(distr.getMean())) {
+							if (b.upper >= low && high >= b.lower) {
+								b.lower = Math.max(b.lower, low);
+								b.upper = Math.min(b.upper, high);
+							}
+						}
+					} catch (MathException e) {
+					} catch (RuntimeException e) {
+						b.lower = 0.0;
+						b.upper = Double.POSITIVE_INFINITY;
+						// e.printStackTrace();
+					}
+				}
+			}
+
+			final Node p = node.getParent();
+			if (p != null) {
+				// assert p.getNr() < bounds.length;
+				Bound pb = bounds[p.getNr()];
+				assert (pb != null);
+				if (!pb.upper.isInfinite() && !(b.upper < pb.upper)) {
+					b.upper = pb.upper;
+				}
+			}
+		}
+
+		for (Node node : post) {
+			final int nr = node.getNr();
+			if (node.isLeaf()) {
+				// Bound b = boundPerNode[nr]; assert b != null;
+			} else {
+				Bound b = bounds[nr];
+				assert (b != null);
+				for (Node c : node.getChildren()) {
+					final Bound cbnd = bounds[c.getNr()];
+					b.lower = Math.max(b.lower, cbnd.lower);
+					cbnd.upper = Math.min(cbnd.upper, b.upper);
+				}
+				if (b.lower > b.upper) {
+					//throw new ConstraintViolatedException(b.lower + " >" + b.upper);
+				}
+			}
+		}
+
+		if (rootHeightInput.get() != null) {
+			final double h = rootHeightInput.get();
+			Bound b = bounds[root.getNr()];
+			if (b.lower <= h && h <= b.upper) {
+				b.upper = h;
+			}
+		}
+
+		for (Node node : post) {
+			if (!node.isLeaf()) {
+				final int nr = node.getNr();
+				Bound b = bounds[nr];
+				double h = -1;
+				for (Node c : node.getChildren()) {
+					h = Math.max(c.getHeight(), h);
+				}
+				if (h > b.upper) {
+					//throw new ConstraintViolatedException(h + " > " + b);
+				}
+				if (b.upper.isInfinite()) {
+					if (!b.lower.isInfinite()) {
+						h = Math.max(h, b.lower);
+					}
+					h += Randomizer.nextExponential(rate);
+				} else {
+					if (!b.lower.isInfinite()) {
+						h = Math.max(b.lower, h);
+					}
+
+					final double range = b.upper - h;
+					double r;
+					if (safe) {
+						r = (range / post.length) * Randomizer.nextDouble();
+						assert r > 0 && h + r < b.upper;
+					} else {
+						r = Randomizer.nextExponential(rate);
+						if (r >= range) {
+							r = range * Randomizer.nextDouble();
+						}
+					}
+					assert h + r <= b.upper;
+					if (r <= epsi && h + r + epsi * 1.001 < b.upper) {
+						r += 1.001 * epsi;
+					}
+					h += r;
+				}
+				node.setHeight(h);
+			}
+		}
+
+		if (rootHeightInput.get() != null) {
+			final double h = rootHeightInput.get();
+			root.setHeight(h);
+		}
+
+		// for now fail - this happens rarely
+		for (int i = post.length - 1; i >= 0; --i) {
+			final Node node = post[i];
+			if (!node.isRoot() && node.getLength() <= epsi) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
