@@ -29,6 +29,7 @@
 	<path id="classpath">
         <pathelement path="${buildAlmostDistribution}"/>
 		<fileset dir="${libBeast2}" includes="junit-4.8.2.jar"/>
+		<fileset dir="${libBeast2}" includes="commons-math3-3.1.1.jar"/>
 		<fileset dir="${libBeast2}" includes="jam.jar"/>
 		<fileset dir="${libBeast2}" includes="colt.jar"/>
 		<fileset dir="${libBeast2}" includes="antlr-runtime-4.7.jar"/>
