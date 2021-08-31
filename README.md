@@ -24,3 +24,8 @@ If the AlmostDistributions package is not listed, you may need to add a package 
 ![Package Repositories](https://github.com/rbouckaert/obama/raw/master/doc/package_repos.png)
 
 Click OK and now AlmostDistributions should be listed in the package manager (as in the first dialog above). Select and click Install/Upgrade to install.
+
+# Citing the package
+
+Remco Bouckaert AlmostDistributions package for BEAST 2. 2021 DOI: 10.5281/zenodo.5348449
+[![DOI](https://zenodo.org/badge/109171998.svg)](https://zenodo.org/badge/latestdoi/109171998)
