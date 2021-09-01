@@ -4,9 +4,9 @@
 
 BEAST 2 package for distributions of infinite support:
 
-AlmostUniform: has epsilon support for values below 'lower' and above 'upper'. Useful for setting up analyses that are difficult to initialise.
+AlmostUniform: has very low support for values below 'lower' and above 'upper'. Useful for setting up analyses that are difficult to initialise. The log density of x when x is outside the lower-upper range is calculated as -penalty * (x-centre) * (x-centre) where penalty is determined by the penalty input (defaults to 10000) and centre is the middle of the range between lower and upper.
 
-AlmostNormal: has epsilon support for values outside 95% HPD of a Normal distribution.
+AlmostNormal: has very low support for values outside 95% HPD of a Normal distribution. For values outside that range, the log density of x is calculated using the same formula as for AlmostUniform.
 
 
 # Installing the package
