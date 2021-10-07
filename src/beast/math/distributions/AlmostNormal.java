@@ -13,7 +13,7 @@ import beast.core.parameter.RealParameter;
 @Description("Normal distribution with very small support outside range of 2 sigma")
 public class AlmostNormal extends ParametricDistribution implements AlmostDistribution {
     final public Input<RealParameter> meanInput = new Input<>("mean", "mean of the normal distribution, defaults to 0");
-    final public Input<RealParameter> sigmaInput = new Input<>("sigma", "variance of the normal distribution, defaults to 1");
+    final public Input<RealParameter> sigmaInput = new Input<>("sigma", "standard deviation of the normal distribution, defaults to 1");
     final public Input<RealParameter> tauInput = new Input<>("tau", "precission of the normal distribution, defaults to 1", Validate.XOR, sigmaInput);
 	final public Input<Double> penaltyInput = new Input<>("penalty", "penalty for being outside range", 10000.0);
 
@@ -93,7 +93,7 @@ public class AlmostNormal extends ParametricDistribution implements AlmostDistri
         	if (x > upper) {
         		return 1;
         	}
-        	double p = super.cumulativeProbability(x) / 0.95;
+        	double p = (super.cumulativeProbability(x) - 0.025)/ 0.95;
         	return p;
         }
 
