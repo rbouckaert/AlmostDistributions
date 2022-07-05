@@ -19,7 +19,7 @@
 	<property name="beast2classpath" location="${beast2path}/build" />
 	<property name="BEASTLabsclasspath" location="../BEASTLabs/build" />
 	<property name="Add_on_dir" value="${release_dir}/add-on" />
-	<property name="version" value="0.1.0" />
+	<property name="version" value="0.2.0" />
 
     <import file="${beast2path}/build.xml" />
 
@@ -28,11 +28,10 @@
 
 	<path id="classpath">
         <pathelement path="${buildAlmostDistributions}"/>
-		<fileset dir="${libBeast2}" includes="junit-4.8.2.jar"/>
-		<fileset dir="${libBeast2}" includes="commons-math3-3.1.1.jar"/>
-		<fileset dir="${libBeast2}" includes="jam.jar"/>
+		<fileset dir="${libBeast2}/junit" includes="junit-platform-console-standalone-1.8.2.jar"/>
+		<fileset dir="${libBeast2}" includes="commons-math3-3.6.1.jar"/>
 		<fileset dir="${libBeast2}" includes="colt.jar"/>
-		<fileset dir="${libBeast2}" includes="antlr-runtime-4.7.jar"/>
+		<fileset dir="${libBeast2}" includes="antlr-runtime-4.10.1.jar"/>
 		<fileset dir="${libBeast2}" includes="beagle.jar"/>
         <pathelement path="${beast2classpath}"/>
         <pathelement path="${BEASTLabsclasspath}"/>
@@ -81,7 +80,7 @@
 		       memorymaximumsize="256m"
 			   source="1.8"
 		       target="1.8">
-			<include name="beast/**/**" />
+			<include name="almostbeast/**/**" />
 			<!-- compile JUnit test classes -->
 			<include name="test/beast/**" />
 		</javac>
@@ -116,9 +115,9 @@
 		</jar>
 		<jar jarfile="${distAlmostDistributions}/AlmostDistributions.src.jar">
 			<fileset dir="${srcAlmostDistributions}">
-				<include name="beast/**/*.java" />
-				<include name="beast/**/*.png" />
-				<include name="beast/**/*.xsl" />
+				<include name="almostbeast/**/*.java" />
+				<include name="almostbeast/**/*.png" />
+				<include name="almostbeast/**/*.xsl" />
 			</fileset>
         </jar>
 		<jar jarfile="${distAlmostDistributions}/AlmostDistributions.addon.jar">
@@ -126,9 +125,8 @@
 				<attribute name="Built-By" value="${user.name}" />
 			</manifest>
 			<fileset dir="${buildAlmostDistributions}">
-				<include name="beast/**/*.png" />
-				<include name="beast/**/*.class" />
-				<include name="util/**/*.class" />
+				<include name="almostbeast/**/*.png" />
+				<include name="almostbeast/**/*.class" />
 				<include name="**/*.properties" />
 			</fileset>
 		</jar>

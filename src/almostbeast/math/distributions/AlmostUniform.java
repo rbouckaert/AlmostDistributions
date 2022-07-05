@@ -1,11 +1,12 @@
-package beast.math.distributions;
+package almostbeast.math.distributions;
 
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.Distribution;
 
-import beast.core.Description;
-import beast.core.Input;
+import beast.base.inference.distribution.Uniform;
+import beast.base.core.Description;
+import beast.base.core.Input;
 
 @Description("Uniform distribution with very small support outside range (to prevent infinities)")
 public class AlmostUniform extends Uniform implements AlmostDistribution {

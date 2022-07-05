@@ -1,10 +1,13 @@
-package beast.math.distributions;
+package almostbeast.math.distributions;
+
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ContinuousDistribution;
+import org.apache.commons.math.distribution.Distribution;
 import org.apache.commons.math.distribution.IntegerDistribution;
 
-import beast.core.Input;
+import beast.base.core.Input;
+import beast.base.inference.distribution.LogNormalDistributionModel;
 
 public class BoundedLogNormalDistributionModel extends LogNormalDistributionModel {
 	public Input<Double> lowerInput = new Input<Double>("lower","lower bound on the interval, defaul 0", 0.0);
@@ -29,7 +32,7 @@ public class BoundedLogNormalDistributionModel extends LogNormalDistributionMode
             return -10000 * (x-getMean()) * (x-getMean());
         	// return Double.NEGATIVE_INFINITY;
         }
-        final org.apache.commons.math.distribution.Distribution dist = getDistribution();
+        final Distribution dist = getDistribution();
         if (dist instanceof ContinuousDistribution) {
             return ((ContinuousDistribution) dist).logDensity(x);
         } else if (dist instanceof IntegerDistribution) {
@@ -59,7 +62,7 @@ public class BoundedLogNormalDistributionModel extends LogNormalDistributionMode
         if (offset != 0) {
         	throw new RuntimeException("Not implemented yet when offset != 0.0");
         }
-        final org.apache.commons.math.distribution.Distribution dist = getDistribution();
+        final Distribution dist = getDistribution();
         double plo = dist.cumulativeProbability(lower);
         double pup = dist.cumulativeProbability(upper);
         double diff = pup - plo;

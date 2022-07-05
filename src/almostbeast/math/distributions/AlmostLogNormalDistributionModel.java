@@ -1,8 +1,9 @@
-package beast.math.distributions;
+package almostbeast.math.distributions;
 
 import org.apache.commons.math.MathException;
 
-import beast.core.Input;
+import beast.base.core.Input;
+import beast.base.inference.distribution.LogNormalDistributionModel;
 
 public class AlmostLogNormalDistributionModel extends LogNormalDistributionModel implements AlmostDistribution {
 	public Input<Double> penaltyInput = new Input<Double>("penalty", "penalty for being outside range", 10000.0);
@@ -55,8 +56,4 @@ public class AlmostLogNormalDistributionModel extends LogNormalDistributionModel
 	}
 
 	
-	@Override
-	public double getMeanWithoutOffset() {
-		return dist.m_fMean;
-	}
 }

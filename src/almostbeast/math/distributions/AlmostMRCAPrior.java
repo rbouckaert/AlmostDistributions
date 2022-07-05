@@ -1,6 +1,7 @@
-package beast.math.distributions;
+package almostbeast.math.distributions;
 
-import beast.core.Description;
+import beast.base.core.Description;
+import beast.base.evolution.tree.MRCAPrior;
 
 @Description("Allows MRCAs to be violated if set to monophyletic")
 public class AlmostMRCAPrior extends MRCAPrior {

@@ -1,4 +1,4 @@
-package beast.evolution.tree;
+package almostbeast.evolution.tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,14 +11,16 @@ import java.util.Set;
 
 import org.apache.commons.math.MathException;
 
-import beast.core.BEASTInterface;
-import beast.core.Description;
-import beast.core.util.Log;
-import beast.evolution.alignment.TaxonSet;
-import beast.math.distributions.AlmostDistribution;
-import beast.math.distributions.MRCAPrior;
-import beast.math.distributions.ParametricDistribution;
-import beast.util.Randomizer;
+import almostbeast.math.distributions.AlmostDistribution;
+import beast.base.core.BEASTInterface;
+import beast.base.core.Description;
+import beast.base.core.Log;
+import beast.base.evolution.alignment.TaxonSet;
+import beastlabs.evolution.tree.SimpleConstrainedRandomTree;
+import beast.base.evolution.tree.MRCAPrior;
+import beast.base.evolution.tree.Node;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.util.Randomizer;
 
 @Description("Like SimpleConstrainedRandomTree, but attempting to take Almost distributions in account")
 public class SimpleConstrainedRandomTreeA extends SimpleConstrainedRandomTree {
@@ -424,7 +426,8 @@ public class SimpleConstrainedRandomTreeA extends SimpleConstrainedRandomTree {
         boundPerNode = new Bound[nodeCount];
         distPerNode = new ParametricDistribution[nodeCount];
 
-        buildTree(sTaxa);                                         assert nextNodeNr == nodeCount : "" + nextNodeNr + ' ' + nodeCount;
+        buildTree(sTaxa);                                         
+        assert nextNodeNr == nodeCount : "" + nextNodeNr + ' ' + nodeCount;
 
         double bm = branchMeanInput.get();
 

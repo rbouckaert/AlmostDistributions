@@ -1,4 +1,4 @@
-package beast.math.distributions;
+package almostbeast.math.distributions;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import beast.core.Description;
-import beast.core.Distribution;
-import beast.core.Input;
-import beast.core.State;
-import beast.core.util.Log;
-import beast.core.Input.Validate;
-import beast.evolution.tree.Node;
-import beast.evolution.tree.Tree;
+import beast.base.core.Description;
+import beast.base.inference.Distribution;
+import beast.base.core.Input;
+import beast.base.inference.State;
+import beast.base.core.Log;
+import beast.base.core.Input.Validate;
+import beast.base.evolution.tree.Node;
+import beast.base.evolution.tree.Tree;
 
 @Description("Distribution on the originate of one or more leafs in a tree")
 public class LeafOriginatePrior extends Distribution {

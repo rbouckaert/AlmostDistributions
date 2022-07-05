@@ -1,14 +1,15 @@
-package beast.math.distributions;
+package almostbeast.math.distributions;
 
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.Input.Validate;
-import beast.core.parameter.RealParameter;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.core.Input.Validate;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.inference.parameter.RealParameter;
 
 @Description("Normal distribution with very small support outside range of 2 sigma")
 public class AlmostNormal extends ParametricDistribution implements AlmostDistribution {
