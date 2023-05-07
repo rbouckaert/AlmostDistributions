@@ -19,7 +19,7 @@ To install AlmostDistributions, it is easiest to start BEAUti (a program that is
 
 If the AlmostDistributions package is listed, just click on it to select it, and hit the Install/Upgrade button.
 
-If the AlmostDistributions package is not listed, you may need to add a package repository by clicking the "Package repositories" button. A window pops up where you can click "Add URL" and add "https://raw.githubusercontent.com/CompEvol/CBAN/master/packages-extra.xml" in the entry. After clicking OK, the dialog should look something like this:
+If the AlmostDistributions package is not listed, you may need to add a package repository by clicking the "Package repositories" button. A window pops up where you can click "Add URL" and add "https://raw.githubusercontent.com/CompEvol/CBAN/master/packages-extra.xml/packages-extra-2.7.xml" (or if you still run BEAST v2.6 "https://raw.githubusercontent.com/CompEvol/CBAN/master/packages-extra.xml") in the entry. After clicking OK, the dialog should look something like this:
 
 ![Package Repositories](https://github.com/rbouckaert/obama/raw/master/doc/package_repos.png)
 
