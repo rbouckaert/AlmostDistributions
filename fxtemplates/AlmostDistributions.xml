@@ -1,0 +1,52 @@
+<beast version='2.0'
+       namespace='beastfx.app.beauti:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.branchratemodel:beast.base.evolution.speciation:beast.base.evolution.tree.coalescent:beast.base.util:beast.base.math:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood:beast.evolution:beast.base.inference.distribution'>
+
+
+    <mergewith point='parametricDistributions'>
+        <!-- Parametric distributions, all without hyperpriors -->
+
+        <!-- Uniform -->
+        <subtemplate id='AlmostUniform' class='almostbeast.math.distributions.AlmostUniform' mainid='[top]'
+            hmc='
+            AlmostUniform/GammaShape/=ParametricDistributions/Uniform/GammaShape/,
+            AlmostUniform/offset/=ParametricDistributions/Uniform/offset/,
+            AlmostUniform/upper/=ParametricDistributions/Uniform/upper/'>
+            <![CDATA[
+        <distr spec="almostbeast.math.distributions.AlmostUniform" lower='0' upper='Infinity'/>
+]]>
+        </subtemplate>
+
+        <!-- Normal -->
+        <subtemplate id='AlmostNormal' class='almostbeast.math.distributions.AlmostNormal' mainid='[top]' 
+        	suppressInputs='almostbeast.math.distributions.AlmostNormal.tau'
+            hmc='
+			AlmostNormal/mean/=ParametricDistributions/Normal/mean/,
+			AlmostNormal/sigma/=ParametricDistributions/Normal/sigma/,
+			AlmostNormal/offset/=ParametricDistributions/Normal/offset/'>
+            <![CDATA[
+    <distr offset="0.0" spec="almostbeast.math.distributions.AlmostNormal">
+        <parameter name='mean' value='0' estimate='false'/>
+        <parameter name='sigma' value='1' estimate='false'/>
+    </distr>
+]]>
+        </subtemplate>
+
+        <!-- lognormal -->
+        <subtemplate id='AlmostLogNormal' class='almostbeast.math.distributions.AlmostLogNormalDistributionModel' mainid='[top]'
+            hmc='
+			AlmostLogNormalDistributionModel/M/=ParametricDistributions/LogNormalDistributionModel/M/,
+			AlmostLogNormalDistributionModel/offset/=ParametricDistributions/LogNormalDistributionModel/offset/,
+			AlmostLogNormalDistributionModel/S/=ParametricDistributions/LogNormalDistributionModel/S/,
+			AlmostLogNormalDistributionModel/meanInRealSpace/=ParametricDistributions/LogNormalDistributionModel/meanInRealSpace/'>
+            <![CDATA[
+        <distr name='distr' spec="almostbeast.math.distributions.AlmostLogNormalDistributionModel">
+            <parameter name='M' value="1" estimate='false'/>
+            <parameter name='S' value="1.25" lower="0" upper="5" estimate='false'/>
+        </distr>
+]]>
+        </subtemplate>
+
+    </mergewith>
+
+
+</beast>

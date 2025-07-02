@@ -15,4 +15,8 @@
 		<provider classname="almostbeast.math.distributions.LeafOriginatePrior"/>
     </service>
 
+    <service type="beastfx.app.beauti.PriorProvider">
+            <provider classname="almostbeast.beauti.AlmostMRCAPriorProvider"/>
+    </service>
+
 </package>
